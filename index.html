@@ -4,122 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Meu Caixa</title>
-    <!-- Tailwind CSS para estilização rápida e responsiva -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Estilos base para parecer um app nativo */
-        body { background-color: #f3f4f6; -webkit-tap-highlight-color: transparent; }
-        .app-container { max-width: 480px; margin: 0 auto; min-height: 100vh; background-color: white; box-shadow: 0 0 15px rgba(0,0,0,0.05); position: relative; }
+        body { background-color: #e2e8f0; -webkit-tap-highlight-color: transparent; }
+        /* No mobile ocupa tudo, no PC fica um card centralizado bonito */
+        .app-container { 
+            width: 100%; 
+            max-width: 100%; 
+            min-height: 100vh; 
+            background-color: white; 
+            position: relative; 
+        }
+        @media (min-width: 768px) {
+            .app-container {
+                max-width: 800px;
+                min-height: auto;
+                margin: 40px auto;
+                border-radius: 1.5rem;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                overflow: hidden;
+            }
+        }
         .hidden { display: none !important; }
     </style>
 </head>
-<body>
+<body class="text-slate-800">
 
 <div class="app-container">
 
     <!-- ================= TELA DE LOGIN ================= -->
-    <div id="loginScreen" class="flex flex-col items-center justify-center min-h-screen p-6 bg-slate-900 text-white">
-        <div class="w-full max-w-sm bg-slate-800 p-8 rounded-2xl shadow-xl">
-            <h1 class="text-2xl font-bold text-center mb-6">🔒 Acesso Restrito</h1>
+    <div id="loginScreen" class="flex flex-col items-center justify-center min-h-screen md:min-h-[600px] p-6 bg-slate-900 text-white">
+        <div class="w-full max-w-sm bg-slate-800 p-8 rounded-2xl shadow-xl border border-slate-700">
+            <h1 class="text-3xl font-bold text-center mb-2">Meu Caixa</h1>
+            <p class="text-slate-400 text-center mb-6 text-sm">Acesso Restrito</p>
             <input type="password" id="senha" placeholder="Digite sua senha" 
-                   class="w-full p-3 rounded-lg bg-slate-700 text-white border-none focus:ring-2 focus:ring-blue-500 mb-4 outline-none">
-            <button onclick="fazerLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition">
+                   class="w-full p-4 rounded-xl bg-slate-900 text-white border border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 mb-4 outline-none transition">
+            <button onclick="fazerLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-blue-500/30">
                 Entrar
             </button>
         </div>
     </div>
 
     <!-- ================= TELA PRINCIPAL (DASHBOARD) ================= -->
-    <div id="mainScreen" class="hidden min-h-screen flex flex-col bg-slate-50">
-        <div class="bg-blue-600 text-white p-6 rounded-b-3xl shadow-md">
-            <div class="flex justify-between items-center mb-4">
-                <h1 class="text-xl font-bold">Meu Caixa</h1>
-                <button onclick="sair()" class="text-sm bg-blue-700 px-3 py-1 rounded-full">Sair</button>
+    <div id="mainScreen" class="hidden flex-col bg-slate-50 min-h-screen md:min-h-[600px]">
+        <!-- Cabeçalho / Resumo -->
+        <div class="bg-blue-600 text-white p-6 md:p-10 md:rounded-b-none shadow-md">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold">Painel Geral</h1>
+                <button onclick="sair()" class="text-sm bg-white/20 hover:bg-white/30 px-4 py-2 rounded-full transition backdrop-blur-sm">Sair</button>
             </div>
             
-            <p class="text-blue-200 text-sm">Balanço de Outubro</p>
-            <h2 class="text-3xl font-bold mt-1" id="saldoTotal">R$ 1.250,00</h2>
+            <p class="text-blue-200 text-sm md:text-base">Saldo Total</p>
+            <h2 class="text-4xl md:text-5xl font-bold mt-1" id="saldoTotal">R$ 0,00</h2>
             
-            <div class="flex gap-4 mt-6">
-                <div class="flex-1 bg-white/20 p-3 rounded-xl backdrop-blur-sm">
-                    <p class="text-xs text-blue-100 mb-1">Recebido (Crédito)</p>
-                    <p class="text-lg font-bold text-green-300" id="valorRecebido">R$ 3.500,00</p>
+            <div class="flex flex-col sm:flex-row gap-4 mt-8">
+                <div class="flex-1 bg-white/10 p-4 md:p-5 rounded-2xl backdrop-blur-sm border border-white/10">
+                    <p class="text-sm text-blue-100 mb-1">Total Recebido</p>
+                    <p class="text-2xl font-bold text-green-300" id="valorRecebido">R$ 0,00</p>
                 </div>
-                <div class="flex-1 bg-white/20 p-3 rounded-xl backdrop-blur-sm">
-                    <p class="text-xs text-blue-100 mb-1">Gasto (Débito)</p>
-                    <p class="text-lg font-bold text-red-300" id="valorGasto">R$ 2.250,00</p>
+                <div class="flex-1 bg-white/10 p-4 md:p-5 rounded-2xl backdrop-blur-sm border border-white/10">
+                    <p class="text-sm text-blue-100 mb-1">Total Gasto</p>
+                    <p class="text-2xl font-bold text-red-300" id="valorGasto">R$ 0,00</p>
                 </div>
             </div>
         </div>
 
-        <div class="p-6 flex flex-col gap-4 mt-4">
-            <button onclick="navegarPara('formScreen')" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition">
-                <span>➕</span> Novo Lançamento
+        <!-- Botões de Ação -->
+        <div class="p-6 md:p-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button onclick="navegarPara('formScreen')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-5 rounded-2xl shadow-lg flex items-center justify-center gap-3 active:scale-95 transition text-lg">
+                <span class="text-2xl">➕</span> Novo Lançamento
             </button>
             
-            <button onclick="navegarPara('historyScreen')" class="w-full bg-white text-slate-800 border-2 border-slate-200 font-bold py-4 rounded-xl shadow-sm flex items-center justify-center gap-2 active:scale-95 transition">
-                <span>📊</span> Consultar Registros
+            <button onclick="navegarPara('historyScreen'); carregarRegistros();" class="w-full bg-white hover:bg-slate-50 text-slate-800 border-2 border-slate-200 font-bold py-5 rounded-2xl shadow-sm flex items-center justify-center gap-3 active:scale-95 transition text-lg">
+                <span class="text-2xl">📊</span> Histórico
             </button>
         </div>
     </div>
 
     <!-- ================= TELA DE INSERÇÃO ================= -->
-    <div id="formScreen" class="hidden min-h-screen flex flex-col bg-white">
-        <div class="bg-slate-900 text-white p-4 flex items-center gap-4 sticky top-0 z-10">
-            <button onclick="navegarPara('mainScreen')" class="p-2">⬅️</button>
-            <h2 class="text-lg font-bold">Novo Lançamento</h2>
+    <div id="formScreen" class="hidden flex-col bg-white min-h-screen md:min-h-[600px]">
+        <div class="bg-slate-900 text-white p-5 flex items-center gap-4 sticky top-0 z-10 shadow-md">
+            <button onclick="navegarPara('mainScreen')" class="p-2 hover:bg-slate-800 rounded-full transition">⬅️ Voltar</button>
+            <h2 class="text-xl font-bold">Novo Lançamento</h2>
         </div>
 
-        <form id="lancamentoForm" class="p-6 flex flex-col gap-4" onsubmit="salvarLancamento(event)">
-            <div>
-                <label class="block text-sm font-bold text-slate-700 mb-1">Tipo</label>
-                <div class="flex gap-2">
-                    <label class="flex-1 cursor-pointer">
-                        <input type="radio" name="tipo" value="Credito" class="peer hidden" checked>
-                        <div class="text-center py-3 border-2 rounded-lg peer-checked:border-green-500 peer-checked:bg-green-50 peer-checked:text-green-700 font-semibold text-slate-500 transition">Receita (Crédito)</div>
-                    </label>
-                    <label class="flex-1 cursor-pointer">
-                        <input type="radio" name="tipo" value="Debito" class="peer hidden">
-                        <div class="text-center py-3 border-2 rounded-lg peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:text-red-700 font-semibold text-slate-500 transition">Despesa (Débito)</div>
-                    </label>
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold text-slate-700 mb-1">Valor (R$)</label>
-                <input type="number" step="0.01" id="valor" required placeholder="0.00" class="w-full p-3 border-2 border-slate-200 rounded-lg text-lg focus:border-blue-500 outline-none">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold text-slate-700 mb-1">Descrição</label>
-                <input type="text" id="descricao" required placeholder="Ex: Almoço cliente, Venda de serviço..." class="w-full p-3 border-2 border-slate-200 rounded-lg focus:border-blue-500 outline-none">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold text-slate-700 mb-1">Data</label>
-                <input type="date" id="data" required class="w-full p-3 border-2 border-slate-200 rounded-lg focus:border-blue-500 outline-none">
-            </div>
-
-            <!-- Botões de Câmera -->
-            <div class="flex gap-4 mt-2">
-                <div class="flex-1 relative">
-                    <input type="file" id="fotoItem" accept="image/*" capture="environment" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                    <div class="bg-blue-50 border-2 border-dashed border-blue-300 text-blue-600 flex flex-col items-center justify-center p-4 rounded-xl h-24">
-                        <span class="text-2xl mb-1">📷</span>
-                        <span class="text-xs font-bold text-center" id="lblFotoItem">Foto do Item</span>
+        <form id="lancamentoForm" class="p-6 md:p-10 flex flex-col gap-5" onsubmit="salvarLancamento(event)">
+            
+            <!-- Grid para Desktop -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Tipo de Lançamento</label>
+                    <div class="flex gap-3">
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="tipo" value="Credito" class="peer hidden" checked>
+                            <div class="text-center py-4 border-2 rounded-xl peer-checked:border-green-500 peer-checked:bg-green-50 peer-checked:text-green-700 font-bold text-slate-400 transition hover:bg-slate-50">Receita (Crédito)</div>
+                        </label>
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="tipo" value="Debito" class="peer hidden">
+                            <div class="text-center py-4 border-2 rounded-xl peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:text-red-700 font-bold text-slate-400 transition hover:bg-slate-50">Despesa (Débito)</div>
+                        </label>
                     </div>
                 </div>
 
-                <div class="flex-1 relative">
-                    <input type="file" id="fotoNota" accept="image/*" capture="environment" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                    <div class="bg-blue-50 border-2 border-dashed border-blue-300 text-blue-600 flex flex-col items-center justify-center p-4 rounded-xl h-24">
-                        <span class="text-2xl mb-1">🧾</span>
-                        <span class="text-xs font-bold text-center" id="lblFotoNota">Foto da Nota</span>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Valor (R$)</label>
+                    <input type="number" step="0.01" id="valor" required placeholder="0.00" class="w-full p-4 border-2 border-slate-200 rounded-xl text-xl focus:border-blue-500 outline-none transition">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Data</label>
+                    <input type="date" id="data" required class="w-full p-4 border-2 border-slate-200 rounded-xl text-lg focus:border-blue-500 outline-none transition text-slate-600">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Descrição</label>
+                    <input type="text" id="descricao" required placeholder="Ex: Venda de serviço, Compra de material..." class="w-full p-4 border-2 border-slate-200 rounded-xl text-lg focus:border-blue-500 outline-none transition">
+                </div>
+
+                <!-- Botões de Câmera -->
+                <div class="md:col-span-2 grid grid-cols-2 gap-4 mt-2">
+                    <div class="relative">
+                        <input type="file" id="fotoItem" accept="image/*" capture="environment" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        <div id="boxFotoItem" class="bg-blue-50 border-2 border-dashed border-blue-300 text-blue-600 flex flex-col items-center justify-center p-4 rounded-xl h-28 transition">
+                            <span class="text-3xl mb-2">📷</span>
+                            <span class="text-sm font-bold text-center" id="lblFotoItem">Foto do Item</span>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <input type="file" id="fotoNota" accept="image/*" capture="environment" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        <div id="boxFotoNota" class="bg-blue-50 border-2 border-dashed border-blue-300 text-blue-600 flex flex-col items-center justify-center p-4 rounded-xl h-28 transition">
+                            <span class="text-3xl mb-2">🧾</span>
+                            <span class="text-sm font-bold text-center" id="lblFotoNota">Foto da Nota</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <button type="submit" id="btnSalvar" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl mt-4 active:scale-95 transition flex justify-center items-center">
+            <button type="submit" id="btnSalvar" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 rounded-xl mt-6 active:scale-95 transition text-lg shadow-lg shadow-blue-500/30">
                 Salvar Lançamento
             </button>
             <p id="statusMsg" class="text-center text-sm font-bold hidden"></p>
@@ -127,85 +150,76 @@
     </div>
 
     <!-- ================= TELA DE CONSULTA ================= -->
-    <div id="historyScreen" class="hidden min-h-screen flex flex-col bg-slate-50">
-        <div class="bg-slate-900 text-white p-4 flex items-center gap-4 sticky top-0 z-10 shadow-md">
-            <button onclick="navegarPara('mainScreen')" class="p-2">⬅️</button>
-            <h2 class="text-lg font-bold">Registros</h2>
+    <div id="historyScreen" class="hidden flex-col bg-slate-50 min-h-screen md:min-h-[600px]">
+        <div class="bg-slate-900 text-white p-5 flex items-center justify-between sticky top-0 z-10 shadow-md">
+            <div class="flex items-center gap-4">
+                <button onclick="navegarPara('mainScreen')" class="p-2 hover:bg-slate-800 rounded-full transition">⬅️ Voltar</button>
+                <h2 class="text-xl font-bold">Histórico</h2>
+            </div>
+            <button onclick="carregarRegistros()" class="text-xl p-2 hover:bg-slate-800 rounded-full transition" title="Atualizar">🔄</button>
         </div>
 
-        <div class="p-4 flex flex-col gap-3" id="listaRegistros">
-            <!-- Item Mockado para visualização -->
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
-                <div class="flex gap-3 items-center">
-                    <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600">📉</div>
-                    <div>
-                        <h3 class="font-bold text-slate-800">Almoço Restaurante</h3>
-                        <p class="text-xs text-slate-500">17/10/2026</p>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <p class="font-bold text-red-600">- R$ 45,90</p>
-                    <div class="flex gap-2 mt-1 justify-end">
-                        <span class="text-xs bg-slate-100 px-2 py-1 rounded cursor-pointer" title="Ver Item">📷</span>
-                        <span class="text-xs bg-slate-100 px-2 py-1 rounded cursor-pointer" title="Ver Nota">🧾</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
-                <div class="flex gap-3 items-center">
-                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">📈</div>
-                    <div>
-                        <h3 class="font-bold text-slate-800">Venda do Monitor</h3>
-                        <p class="text-xs text-slate-500">15/10/2026</p>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <p class="font-bold text-green-600">+ R$ 600,00</p>
-                </div>
-            </div>
+        <!-- A lista de registros vai ser injetada aqui -->
+        <div class="p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-4" id="listaRegistros">
+            <!-- Limpo: o JS preenche com fetch -->
         </div>
     </div>
 
 </div>
 
 <script>
-    // === 1. LÓGICA DE NAVEGAÇÃO E LOGIN ===
-    const SENHA_SECRETA = "leo123"; // Troque pela senha que desejar
+    // =====================================================================
+    // 1. CONFIGURAÇÕES PRINCIPAIS (COLE A URL DO SEU APPS SCRIPT AQUI)
+    // =====================================================================
+    const SENHA_SECRETA = "leo123";
+    const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbxOBqNcwAU_vjDK6FpEEtTmlTwM9gUPgWhqb80XsONVQp0L9KMJ3uLJCS5UHHVApCdSOA/exec"; // <--- ATENÇÃO AQUI!
 
+    // =====================================================================
+    // 2. NAVEGAÇÃO E LOGIN
+    // =====================================================================
     function fazerLogin() {
         const inputSenha = document.getElementById('senha').value;
         if (inputSenha === SENHA_SECRETA) {
             navegarPara('mainScreen');
             document.getElementById('senha').value = '';
-            // Preenche a data de hoje no formulário automaticamente
             document.getElementById('data').valueAsDate = new Date();
+            carregarRegistros(); // Já carrega os dados em segundo plano ao logar
         } else {
             alert("Senha incorreta!");
         }
     }
 
-    function sair() {
-        navegarPara('loginScreen');
-    }
+    function sair() { navegarPara('loginScreen'); }
 
     function navegarPara(telaId) {
         ['loginScreen', 'mainScreen', 'formScreen', 'historyScreen'].forEach(id => {
             document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
         });
         document.getElementById(telaId).classList.remove('hidden');
+        document.getElementById(telaId).classList.add('flex');
     }
 
-    // === 2. LÓGICA DE INTERFACE DE ARQUIVOS (UX) ===
-    // Muda o texto do botão quando uma foto é tirada
+    // =====================================================================
+    // 3. EFEITOS VISUAIS DE UPLOAD (UX)
+    // =====================================================================
     document.getElementById('fotoItem').addEventListener('change', function() {
-        if(this.files.length > 0) document.getElementById('lblFotoItem').innerText = "Item OK ✅";
+        if(this.files.length > 0) {
+            document.getElementById('lblFotoItem').innerText = "Item OK ✅";
+            document.getElementById('boxFotoItem').className = "bg-green-50 border-2 border-solid border-green-400 text-green-700 flex flex-col items-center justify-center p-4 rounded-xl h-28 transition";
+        }
     });
+    
     document.getElementById('fotoNota').addEventListener('change', function() {
-        if(this.files.length > 0) document.getElementById('lblFotoNota').innerText = "Nota OK ✅";
+        if(this.files.length > 0) {
+            document.getElementById('lblFotoNota').innerText = "Nota OK ✅";
+            document.getElementById('boxFotoNota').className = "bg-green-50 border-2 border-solid border-green-400 text-green-700 flex flex-col items-center justify-center p-4 rounded-xl h-28 transition";
+        }
     });
 
-    // === 3. CONVERSÃO DE IMAGEM PARA BASE64 (PREPARAÇÃO PARA O BACKEND) ===
+    // =====================================================================
+    // 4. CONVERSÃO DE IMAGEM PARA ENVIO (BASE64)
+    // =====================================================================
     function fileToBase64(file) {
         return new Promise((resolve, reject) => {
             if (!file) { resolve(null); return; }
@@ -214,78 +228,153 @@
             reader.onload = () => resolve({
                 name: file.name,
                 mimeType: file.type,
-                // Remove o prefixo "data:image/jpeg;base64," para enviar puro pro Google
                 data: reader.result.split(',')[1] 
             });
             reader.onerror = error => reject(error);
         });
     }
 
-    // === 4. ENVIO DOS DADOS ===
+    // =====================================================================
+    // 5. SALVAR DADOS NO GOOGLE (POST REAL)
+    // =====================================================================
     async function salvarLancamento(event) {
-        event.preventDefault(); // Impede a página de recarregar
+        event.preventDefault();
         
+        if(URL_APPS_SCRIPT === "COLOQUE_AQUI_A_URL_DO_SEU_WEB_APP") {
+            alert("Você esqueceu de colocar a URL do Apps Script no código!");
+            return;
+        }
+
         const btnSalvar = document.getElementById('btnSalvar');
         const statusMsg = document.getElementById('statusMsg');
         
-        btnSalvar.innerText = "Processando... ⏳";
+        btnSalvar.innerText = "Enviando pro Google... ⏳";
         btnSalvar.disabled = true;
 
         try {
-            // 1. Pega os dados do formulário
             const dados = {
+                senha: SENHA_SECRETA,
                 tipo: document.querySelector('input[name="tipo"]:checked').value,
                 valor: document.getElementById('valor').value,
                 descricao: document.getElementById('descricao').value,
                 data: document.getElementById('data').value
             };
 
-            // 2. Converte as fotos para Base64
             const fileItem = document.getElementById('fotoItem').files[0];
             const fileNota = document.getElementById('fotoNota').files[0];
             
             dados.fotoItem = await fileToBase64(fileItem);
             dados.fotoNota = await fileToBase64(fileNota);
 
-            console.log("Dados prontos para envio ao Google Apps Script:", dados);
+            // Fetch Real - text/plain evita bloqueio de CORS do Google Apps Script
+            const resposta = await fetch(URL_APPS_SCRIPT, {
+                method: 'POST',
+                body: JSON.stringify(dados),
+                headers: { "Content-Type": "text/plain;charset=utf-8" } 
+            });
 
-            // ============================================================
-            // AQUI ENTRARÁ O FETCH PARA A URL DO GOOGLE APPS SCRIPT
-            // Exemplo (comentado por enquanto):
-            // const URL_APPS_SCRIPT = "SUA_URL_AQUI";
-            // await fetch(URL_APPS_SCRIPT, {
-            //     method: 'POST',
-            //     body: JSON.stringify(dados)
-            // });
-            // ============================================================
+            const resultado = await resposta.json();
 
-            // Simula um tempo de rede para efeito visual
-            await new Promise(r => setTimeout(r, 1000));
+            if (resultado.erro) throw new Error(resultado.erro);
 
-            // Sucesso!
-            statusMsg.innerText = "Lançamento salvo com sucesso! ✅";
-            statusMsg.classList.remove('hidden', 'text-red-500');
-            statusMsg.classList.add('text-green-600');
+            // Sucesso Visual
+            statusMsg.innerText = "Salvo na Planilha! ✅";
+            statusMsg.className = "text-center text-sm font-bold text-green-600 mt-4 block";
             
-            // Limpa o formulário
+            // Limpa Formulário
             document.getElementById('lancamentoForm').reset();
             document.getElementById('data').valueAsDate = new Date();
+            
+            // Reseta visual dos botões de foto
             document.getElementById('lblFotoItem').innerText = "Foto do Item";
+            document.getElementById('boxFotoItem').className = "bg-blue-50 border-2 border-dashed border-blue-300 text-blue-600 flex flex-col items-center justify-center p-4 rounded-xl h-28 transition";
             document.getElementById('lblFotoNota').innerText = "Foto da Nota";
+            document.getElementById('boxFotoNota').className = "bg-blue-50 border-2 border-dashed border-blue-300 text-blue-600 flex flex-col items-center justify-center p-4 rounded-xl h-28 transition";
 
             setTimeout(() => { 
                 statusMsg.classList.add('hidden'); 
                 navegarPara('mainScreen');
+                carregarRegistros(); // Atualiza o painel principal
             }, 2000);
 
         } catch (error) {
-            console.error("Erro:", error);
-            statusMsg.innerText = "Erro ao salvar. Tente novamente. ❌";
-            statusMsg.classList.remove('hidden', 'text-green-600');
-            statusMsg.classList.add('text-red-500');
+            console.error(error);
+            statusMsg.innerText = "Erro ao salvar: " + error.message;
+            statusMsg.className = "text-center text-sm font-bold text-red-500 mt-4 block";
         } finally {
             btnSalvar.innerText = "Salvar Lançamento";
             btnSalvar.disabled = false;
+        }
+    }
+
+    // =====================================================================
+    // 6. BUSCAR DADOS DO GOOGLE (GET REAL)
+    // =====================================================================
+    async function carregarRegistros() {
+        if(URL_APPS_SCRIPT === "COLOQUE_AQUI_A_URL_DO_SEU_WEB_APP") return;
+
+        const divLista = document.getElementById('listaRegistros');
+        divLista.innerHTML = '<div class="col-span-full flex flex-col items-center p-10"><span class="text-4xl animate-spin mb-4">⏳</span><p class="text-slate-500 font-bold">Buscando na planilha...</p></div>';
+
+        try {
+            const resposta = await fetch(URL_APPS_SCRIPT);
+            const registros = await resposta.json();
+
+            if (registros.erro) throw new Error(registros.erro);
+
+            divLista.innerHTML = ''; 
+            let totalCredito = 0;
+            let totalDebito = 0;
+
+            if (registros.length === 0) {
+                divLista.innerHTML = '<p class="col-span-full text-center p-10 text-slate-500 font-bold">Nenhum registro encontrado ainda.</p>';
+            } else {
+                registros.forEach(item => {
+                    const valorNum = parseFloat(item.valor.toString().replace(',','.')) || 0;
+                    let isCredito = item.tipo === "Credito" || item.tipo === "Receita";
+                    
+                    let cor = isCredito ? "green" : "red";
+                    let icone = isCredito ? "📈" : "📉";
+                    let sinal = isCredito ? "+" : "-";
+
+                    if (isCredito) totalCredito += valorNum;
+                    else totalDebito += valorNum;
+
+                    // Ajuste de Data
+                    let dataFormatada = item.data;
+                    if(item.data && item.data.includes('T')) {
+                        dataFormatada = item.data.split('T')[0].split('-').reverse().join('/');
+                    }
+
+                    divLista.innerHTML += `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center hover:shadow-md transition">
+                        <div class="flex gap-4 items-center">
+                            <div class="w-12 h-12 rounded-full bg-${cor}-100 flex items-center justify-center text-${cor}-600 text-xl">${icone}</div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-lg">${item.descricao}</h3>
+                                <p class="text-sm text-slate-500">${dataFormatada}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-${cor}-600 text-lg">${sinal} R$ ${valorNum.toFixed(2).replace('.', ',')}</p>
+                            <div class="flex gap-2 mt-2 justify-end">
+                                ${item.urlItem ? `<a href="${item.urlItem}" target="_blank" class="text-sm bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1 rounded-lg transition font-bold" title="Ver Item">📷 Item</a>` : ''}
+                                ${item.urlNota ? `<a href="${item.urlNota}" target="_blank" class="text-sm bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1 rounded-lg transition font-bold" title="Ver Nota">🧾 Nota</a>` : ''}
+                            </div>
+                        </div>
+                    </div>`;
+                });
+            }
+
+            // Atualiza o painel Dashboard
+            const saldoTotal = totalCredito - totalDebito;
+            document.getElementById('valorRecebido').innerText = `R$ ${totalCredito.toFixed(2).replace('.', ',')}`;
+            document.getElementById('valorGasto').innerText = `R$ ${totalDebito.toFixed(2).replace('.', ',')}`;
+            document.getElementById('saldoTotal').innerText = `R$ ${saldoTotal.toFixed(2).replace('.', ',')}`;
+
+        } catch (error) {
+            console.error("Erro ao carregar:", error);
+            divLista.innerHTML = `<p class="col-span-full text-center p-10 text-red-500 font-bold">Erro ao carregar dados do Google: ${error.message}</p>`;
         }
     }
 </script>
